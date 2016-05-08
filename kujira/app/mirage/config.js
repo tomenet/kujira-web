@@ -1,82 +1,59 @@
+import Mirage from 'ember-cli-mirage';
+
 export default function() {
-
-  // These comments are here to help you get started. Feel free to delete them.
-
+  this.namespace = '/kujira/api/v1';
+  
   /*
-    Config (with defaults).
+    Extension for users
 
-    Note: these only affect routes defined *after* them!
   */
-  // this.urlPrefix = '';    // make this `http://localhost:8080`, for example, if your API is on a different server
-  this.namespace = '/kujira/api/v1';    // make this `api`, for example, if your API is namespaced
-  // this.timing = 400;      // delay for each request, automatically set to 0 during testing
+  this.get('/users', function(db, request){
+    if(request.requestHeaders.Authorization === "Bearer PA$$WORD") {
+      return { "data":{"id":"1","type":"users","attributes":{"group":"users"}} };
+    }
+    if(request.requestHeaders.Authorization === "Bearer APA$$WORD") {
+      return { "data":{"id":"1","type":"users","attributes":{"group":"admins"}} };
+    }
+    if(request.requestHeaders.Authorization === "Bearer SUPA$$WORD") {
+      return { "data":{"id":"1","type":"users","attributes":{"group":"susers"}} };
+    }
+    else{
+      return new Mirage.Response(401, {}, {});
+    }
+  });
 
   /*
-    Route shorthand cheatsheet
+    This is an example of users DV.
+
+    Usage login/password:
+      user/user;
+      suser/suser.
   */
-  /*
-    GET shorthands
+  this.post('/token', function(db, request){
+    var params = JSON.parse(request.requestBody);
+    const username= params['username'];
+    const password= params['password'];
 
-    // Collections
-    this.get('/contacts');
-    this.get('/contacts', 'users');
-    this.get('/contacts', ['contacts', 'addresses']);
-
-    // Single objects
-    this.get('/contacts/:id');
-    this.get('/contacts/:id', 'user');
-    this.get('/contacts/:id', ['contact', 'addresses']);
-  */
-
-  /*
-    POST shorthands
-
-    this.post('/contacts');
-    this.post('/contacts', 'user'); // specify the type of resource to be created
-  */
-
-  /*
-    PUT shorthands
-
-    this.put('/contacts/:id');
-    this.put('/contacts/:id', 'user'); // specify the type of resource to be updated
-  */
-
-  /*
-    DELETE shorthands
-
-    this.del('/contacts/:id');
-    this.del('/contacts/:id', 'user'); // specify the type of resource to be deleted
-
-    // Single object + related resources. Make sure parent resource is first.
-    this.del('/contacts/:id', ['contact', 'addresses']);
-  */
-
-  /*
-    Function fallback. Manipulate data in the db via
-
-      - db.{collection}
-      - db.{collection}.find(id)
-      - db.{collection}.where(query)
-      - db.{collection}.update(target, attrs)
-      - db.{collection}.remove(target)
-
-    // Example: return a single object with related models
-    this.get('/contacts/:id', function(db, request) {
-      var contactId = +request.params.id;
-
+    if(username === "user" && password === "user") {
       return {
-        contact: db.contacts.find(contactId),
-        addresses: db.addresses.where({contact_id: contactId})
+        "access_token":"PA$$WORD",
+        "token_type":"bearer"
       };
-    });
+    }
+    if(username === "admin" && password === "admin") {
+      return {
+        "access_token":"APA$$WORD",
+        "token_type":"bearer"
+      };
+    }
+    if(username === "suser" && password === "suser") {
+      return {
+        "access_token":"SUPA$$WORD",
+        "token_type":"bearer"
+      };
+    }
 
-  */
+    var body = { errors: 'Email or password is invalid for '+ username  };
+    return new Mirage.Response(401, {}, body);
+  });
 }
-
-/*
-You can optionally export a config that is only loaded during tests
-export function testConfig() {
-
-}
-*/
