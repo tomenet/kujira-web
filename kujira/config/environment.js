@@ -41,13 +41,15 @@ module.exports = function(environment) {
   serverTokenEndpoint: 'http://localhost:5000/authenticate', /*'api/v1/token',*/ //IF YOU WANT TO USE MIRAGE
   identificationField: 'username',
   passwordField: 'password',
-  //tokenPropertyName: 'user.token',
+  tokenPropertyName: 'token',
   /*authorizationPrefix: 'Bearer ',
   AuthorizationHeaderName: 'Authorization',
-  headers: {},
+  headers: {},*/
   refreshAccessTokens: true,
+  serverTokenRefreshEndpoint: '/api/token-refresh/',
+  tokenExpireName: 'exp',
    timeFactor: 1,
-   refreshLeeway: 300 // Refresh the token 5 minutes (300s) before it expires.*/
+   refreshLeeway: 300 // Refresh the token 5 minutes (300s) before it expires.//*/
 }
 
   if (environment === 'development') {
