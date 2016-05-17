@@ -37,16 +37,16 @@ module.exports = function(environment) {
 
 
   ENV['ember-simple-auth-token'] = {
-  serverTokenEndpoint: 'http://localhost:5000/authenticate', /*'api/v1/token',*/ //IF YOU WANT TO USE MIRAGE
+  serverTokenEndpoint: 'http://localhost:5000/auth/authenticate', /*'api/v1/token',*/ //IF YOU WANT TO USE MIRAGE
   identificationField: 'username',
   passwordField: 'password',
-  tokenPropertyName: 'token',
+  tokenPropertyName: 'tokens',
   /*authorizationPrefix: 'Bearer ',
   AuthorizationHeaderName: 'Authorization',
   headers: {},
   refreshAccessTokens: true,
-  serverTokenRefreshEndpoint: '/api/token-refresh/',
-  tokenExpireName: 'exp',
+  serverTokenRefreshEndpoint: 'http://localhost:5000/auth/refresh/',
+  tokenExpireName: 'expire',
   timeFactor: 1,
   refreshLeeway: 300 // Refresh the token 5 minutes (300s) before it expires.//*/
 };

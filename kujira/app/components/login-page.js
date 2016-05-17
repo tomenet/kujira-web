@@ -10,9 +10,9 @@ export default Ember.Component.extend({
         authenticator = 'authenticator:token';
 
       this.get('session').authenticate(authenticator, credentials).then(() => {
-        console.log('Login Succedd');
+        console.log('Login Succeed');
       }).catch((reason) => {
-        console.log('Auth error');
+        console.log('Auth error', reason);
 
         if(reason != null)
           alert(reason.errors.toString());
